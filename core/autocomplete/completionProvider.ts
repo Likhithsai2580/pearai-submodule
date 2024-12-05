@@ -20,8 +20,8 @@ import {
   COUNT_COMPLETION_REJECTED_AFTER,
   DEFAULT_AUTOCOMPLETE_OPTS,
 } from "../util/parameters.js";
-import { Telemetry } from "../util/posthog.js";
-import { getRangeInString } from "../util/ranges.js";
+import { Telemetry } from "../util/posthog.js;
+import { getRangeInString } from "../util/ranges.js;
 import { ImportDefinitionsService } from "./ImportDefinitionsService.js";
 import { BracketMatchingService } from "./brackets.js";
 import AutocompleteLruCache from "./cache.js";
@@ -114,6 +114,7 @@ function formatExternalSnippet(
   snippet: string,
   language: AutocompleteLanguageInfo,
 ) {
+  // This function formats an external snippet by adding comments with the file path and snippet content.
   const comment = language.singleLineComment;
   const lines = [
     `${comment} Path: ${getBasename(filepath)}`,
@@ -125,6 +126,8 @@ function formatExternalSnippet(
   ];
   return lines.join("\n");
 }
+
+// Note: This file has been modified significantly from its original contents. New commands have been added, and there has been renaming from Continue to PearAI. pearai-submodule is a fork of Continue (https://github.com/continuedev/continue).
 
 let shownGptClaudeWarning = false;
 const nonAutocompleteModels = [
@@ -142,6 +145,7 @@ export type GetLspDefinitionsFunction = (
   lang: AutocompleteLanguageInfo,
 ) => Promise<AutocompleteSnippet[]>;
 
+// The CompletionProvider class provides inline completion items for code autocompletion.
 export class CompletionProvider {
   private static debounceTimeout: NodeJS.Timeout | undefined = undefined;
   private static debouncing = false;
@@ -235,6 +239,7 @@ export class CompletionProvider {
     }
   }
 
+  // The provideInlineCompletionItems method provides inline completion items for code autocompletion.
   public async provideInlineCompletionItems(
     input: AutocompleteInput,
     token: AbortSignal | undefined,
@@ -412,6 +417,7 @@ export class CompletionProvider {
     };
   }
 
+  // The getTabCompletion method generates a tab completion for code autocompletion.
   async getTabCompletion(
     token: AbortSignal,
     options: TabAutocompleteOptions,

@@ -34,7 +34,6 @@ import { handlePerplexityMode } from "./integrations/perplexity/perplexity";
 import { PEAR_CONTINUE_VIEW_ID } from "./ContinueGUIWebviewViewProvider";
 import { handleIntegrationShortcutKey } from "./util/integrationUtils";
 import { FIRST_LAUNCH_KEY, importUserSettingsFromVSCode, isFirstLaunch } from "./copySettings";
-import { isValidFilePath } from "core/util";
 import { attemptInstallExtension } from "./activation/activate";
 
 
@@ -526,14 +525,8 @@ const commandsMap: (
       captureCommandTelemetry("sendToTerminal");
       ide.runCommand(text);
     },
-    "pearai.newSession": async () => {
-      const currentFile = await ide.getCurrentFile();
+    "pearai.newSession": () => {
       sidebar.webviewProtocol?.request("newSession", undefined);
-      if (currentFile) {
-        if (currentFile && isValidFilePath(currentFile)) {
-          sidebar.webviewProtocol?.request("activeEditorChange", { filepath: currentFile });
-        }
-      }
     },
     "pearai.viewHistory": () => {
       sidebar.webviewProtocol?.request("viewHistory", undefined, [
@@ -553,7 +546,7 @@ const commandsMap: (
 
       if (fullScreenTab && fullScreenPanel) {
         //Full screen open, but not focused - focus it
-        fullScreenPanel.reveal();
+        fullScreenPanel?.reveal();
         return;
       }
 

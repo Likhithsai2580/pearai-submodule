@@ -1,6 +1,7 @@
 import { RangeInFileWithContents } from "../commands/util.js";
 import { AutocompleteSnippet, jaccardSimilarity } from "./ranking.js";
 
+// The slidingWindow function generates a sliding window of content with a specified window size.
 function* slidingWindow(
   content: string,
   windowSize: number,

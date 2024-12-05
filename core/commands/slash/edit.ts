@@ -53,6 +53,7 @@ Raise an error if the key already exists.
 Main task:
 `;
 
+// This function generates the prompt parts for the LLM to edit the code
 export async function getPromptParts(
   rif: RangeInFileWithContents,
   fullFileContents: string,
@@ -141,6 +142,7 @@ export async function getPromptParts(
   return { filePrefix, fileSuffix, contents: rif.contents, maxTokens };
 }
 
+// This function compiles the prompt for the LLM to edit the code
 function compilePrompt(
   filePrefix: string,
   contents: string,
@@ -192,28 +194,7 @@ ${input}
   return prompt;
 }
 
-function isEndLine(line: string) {
-  return (
-    line.includes("</modified_code_to_edit>") ||
-    line.includes("</code_to_edit>") ||
-    line.includes("[/CODE]")
-  );
-}
-
-function lineToBeIgnored(line: string, isFirstLine = false): boolean {
-  return (
-    line.includes("```") ||
-    line.includes("<modified_code_to_edit>") ||
-    line.includes("<file_prefix>") ||
-    line.includes("</file_prefix>") ||
-    line.includes("<file_suffix>") ||
-    line.includes("</file_suffix>") ||
-    line.includes("<user_request>") ||
-    line.includes("</user_request>") ||
-    line.includes("<code_to_edit>")
-  );
-}
-
+// This constant defines the EditSlashCommand which is used to edit selected code
 const EditSlashCommand: SlashCommand = {
   name: "edit",
   description: "Edit selected code",

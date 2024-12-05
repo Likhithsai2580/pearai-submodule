@@ -1,11 +1,15 @@
 {
+  // Indicates that this is the root configuration file and stops ESLint from looking for configurations in parent folders.
   "root": true,
+  // Specifies the parser to be used for TypeScript files.
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module"
   },
+  // Specifies the ESLint plugins to be used.
   "plugins": ["@typescript-eslint", "import"],
+  // Specifies the rules for the project.
   "rules": {
     "quotes": ["warn", "double", {}],
     "@typescript-eslint/naming-convention": "warn",
@@ -15,5 +19,6 @@
     "no-throw-literal": "warn",
     "semi": "off"
   },
+  // Specifies the patterns to be ignored by ESLint.
   "ignorePatterns": ["out", "dist", "**/*.d.ts"]
 }

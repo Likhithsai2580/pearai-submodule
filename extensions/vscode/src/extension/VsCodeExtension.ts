@@ -1,5 +1,3 @@
-// Note: This file has been modified significantly from its original contents. New commands have been added, and there has been renaming from Continue to PearAI. pearai-submodule is a fork of Continue (https://github.com/continuedev/continue).
-
 import { IContextProvider } from "core";
 import { ConfigHandler } from "core/config/ConfigHandler";
 import { Core } from "core/core";
@@ -33,7 +31,6 @@ import { TabAutocompleteModel } from "../util/loadAutocompleteModel";
 import type { VsCodeWebviewProtocol } from "../webviewProtocol";
 import { VsCodeMessenger } from "./VsCodeMessenger";
 import { startAiderProcess } from "../integrations/aider/aider";
-import { debounce } from "lodash";
 
 export class VsCodeExtension {
   // Currently some of these are public so they can be used in testing (test/test-suites)
@@ -198,7 +195,6 @@ export class VsCodeExtension {
     setupStatusBar(
       enabled ? StatusBarStatus.Enabled : StatusBarStatus.Disabled,
     );
-
     context.subscriptions.push(
       vscode.languages.registerInlineCompletionItemProvider(
         [{ pattern: "**" }],
@@ -362,7 +358,6 @@ export class VsCodeExtension {
         return uri.query;
       }
     })();
-
     context.subscriptions.push(
       vscode.workspace.registerTextDocumentContentProvider(
         VsCodeExtension.continueVirtualDocumentScheme,
@@ -370,18 +365,8 @@ export class VsCodeExtension {
       ),
     );
 
-    context.subscriptions.push(
-      vscode.window.onDidChangeActiveTextEditor((event) => {
-        if (!event) {
-          return;
-        }
-        const filepath = event.document.uri.fsPath;
-        this.notifyEditorChange(filepath);
-      })
-    );
-
     this.ide.onDidChangeActiveTextEditor((filepath) => {
-      this.notifyEditorChange(filepath || null);
+      this.core.invoke("didChangeActiveTextEditor", { filepath });
     });
 
     startAiderProcess(this.core);
@@ -393,18 +378,10 @@ export class VsCodeExtension {
   private PREVIOUS_BRANCH_FOR_WORKSPACE_DIR: { [dir: string]: string } = {};
 
   private async refreshContextProviders() {
-    this.sidebar.webviewProtocol.request("refreshSubmenuItems", undefined);
+    this.sidebar.webviewProtocol.request("refreshSubmenuItems", undefined); // Refresh all context providers
   }
 
   registerCustomContextProvider(contextProvider: IContextProvider) {
     this.configHandler.registerCustomContextProvider(contextProvider);
-  }
-
-  private notifyEditorChange(filepath: string | null) {
-    if (filepath) {
-      this.core.invoke("didChangeActiveTextEditor", { filepath });
-    }
-
-    this.sidebar.webviewProtocol?.request("activeEditorChange", { filepath });
   }
 }

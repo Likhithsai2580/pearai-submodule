@@ -3,6 +3,7 @@ export async function* onlyWhitespaceAfterEndOfLine(
   endOfLine: string[],
   fullStop: () => void,
 ): AsyncGenerator<string> {
+  // This function stops the stream if only whitespace is found after the end of a line.
   let pending = "";
   for await (let chunk of stream) {
     chunk = pending + chunk;
@@ -28,6 +29,7 @@ export async function* onlyWhitespaceAfterEndOfLine(
 }
 
 export async function* noFirstCharNewline(stream: AsyncGenerator<string>) {
+  // This function ensures that the first character of the stream is not a newline.
   let first = true;
   for await (const char of stream) {
     if (first) {
@@ -44,6 +46,7 @@ export async function* stopAtStopTokens(
   stream: AsyncGenerator<string>,
   stopTokens: string[],
 ): AsyncGenerator<string> {
+  // This function stops the stream when any of the specified stop tokens are encountered.
   if (stopTokens.length === 0) {
     for await (const char of stream) {
       yield char;

@@ -1,5 +1,6 @@
 import type { LineFilter } from "./lineStream.js";
 
+// The AutocompleteLanguageInfo interface defines the structure for language-specific information used in autocompletion.
 export interface AutocompleteLanguageInfo {
   name: string;
   topLevelKeywords: string[];
@@ -13,7 +14,7 @@ export interface AutocompleteLanguageInfo {
   }) => boolean | undefined;
 }
 
-// TypeScript
+// TypeScript language information used for autocompletion.
 export const Typescript = {
   name: "TypeScript",
   topLevelKeywords: ["function", "class", "module", "export", "import"],
@@ -21,7 +22,7 @@ export const Typescript = {
   endOfLine: [";"],
 };
 
-// Python
+// Python language information used for autocompletion.
 export const Python = {
   name: "Python",
   // """"#" is for .ipynb files, where we add '"""' surrounding markdown blocks.
@@ -31,7 +32,7 @@ export const Python = {
   endOfLine: [],
 };
 
-// Java
+// Java language information used for autocompletion.
 export const Java = {
   name: "Java",
   topLevelKeywords: ["class", "function"],
@@ -39,7 +40,7 @@ export const Java = {
   endOfLine: [";"],
 };
 
-// C++
+// C++ language information used for autocompletion.
 export const Cpp = {
   name: "C++",
   topLevelKeywords: ["class", "namespace", "template"],
